@@ -1020,3 +1020,15 @@
     gap: 10px;
     margin-top: 10px;
   }
+
+  .dashboard-section {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  .accounts, .budget-progress {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
