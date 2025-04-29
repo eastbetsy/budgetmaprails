@@ -947,3 +947,76 @@
       flex-direction: column;
     }
   }
+
+  /* app/assets/stylesheets/styles.css */
+/* Existing styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+  }
+  .logo img {
+    height: 50px;
+  }
+  .hero {
+    text-align: center;
+    padding: 50px 0;
+  }
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+  }
+  .plaid-section {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* New styles for chat page */
+  .chat-section {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  .messages-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .message {
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 5px;
+  }
+  .message.user {
+    background-color: #e6f3ff;
+    text-align: right;
+  }
+  .message.assistant {
+    background-color: #f0f0f0;
+    text-align: left;
+  }
+  .message-with-buttons {
+    text-align: center;
+    font-style: italic;
+    color: #555;
+  }
+  .message-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .goal-buttons, .rule-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
