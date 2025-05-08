@@ -1,21 +1,3 @@
-# Alternative approach using Rails credentials
-# Run this command to edit credentials:
-# For development: rails credentials:edit --environment development
-# For production: rails credentials:edit
-
-# This will open an editor with your encrypted credentials file
-# Add your Plaid keys in this format:
-# 
-# plaid:
-#   client_id: your_client_id
-#   sandbox_secret: your_sandbox_secret
-#   development_secret: your_development_secret
-#   production_secret: your_production_secret
-#
-
-# Then in your initializer, use:
-# config/initializers/plaid.rb
-
 require 'plaid'
 
 configuration = Plaid::Configuration.new
