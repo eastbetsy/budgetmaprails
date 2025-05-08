@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html class="dark">
+<head>
+  <title>Account Details</title>
+</head>
+<body class="bg-white dark:bg-gray-900 text-black dark:text-white">
+  <div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-4">Link Your Bank Account</h1>
+    <button id="link-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded dark:bg-gray-900 dark:hover:bg-gray-700 dark:text-white">Link Account</button>
+    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+    <script>
+      document.getElementById('link-button').onclick = function() {
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch('/plaid/create_link_token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken
+          },
+          body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            console.error('Error:', data.error);
+            return;
+          }
+
+          var linkHandler = Plaid.create({
+            token: data.link_token,
+            onSuccess: function(public_token, metadata) {
+              fetch('/plaid/exchange_public_token', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': csrfToken
+                },
+                body: JSON.stringify({ public_token: public_token })
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.error) {
+                  console.error('Error:', data.error);
+                  return;
+                }
+                window.location.href = '/plaid/accounts';
+              });
+            },
+            onExit: function(err, metadata) {
+              console.log('Plaid link exit', err, metadata);
+            }
+          });
+
+          linkHandler.open();
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
+        });
+      };
+    </script>
+  </div>
+</body>
+</html>
