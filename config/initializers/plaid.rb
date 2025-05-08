@@ -1,15 +1,31 @@
-# Initialize Plaid configuration
-plaid_config = Plaid::Configuration.new
-plaid_config.server_index = Plaid::Configuration::Environment["sandbox"]  # or another environment as needed
-plaid_config.api_key["PLAID-CLIENT-ID"] = Rails.application.credentials.dig(:development, :plaid, :client_id)
-plaid_config.api_key["PLAID-SECRET"] = Rails.application.credentials.dig(:development, :plaid, :secret)
+# Alternative approach using Rails credentials
+# Run this command to edit credentials:
+# For development: rails credentials:edit --environment development
+# For production: rails credentials:edit
 
-# Create an API client instance
-api_client = Plaid::ApiClient.new(plaid_config)
+# This will open an editor with your encrypted credentials file
+# Add your Plaid keys in this format:
+# 
+# plaid:
+#   client_id: your_client_id
+#   sandbox_secret: your_sandbox_secret
+#   development_secret: your_development_secret
+#   production_secret: your_production_secret
+#
 
-# Create a Plaid API instance to use across the application
-PlaidClient = Plaid::PlaidApi.new(api_client)
+# Then in your initializer, use:
+# config/initializers/plaid.rb
 
-api_client.create_connection do |builder|
-  builder.use Faraday::Response::Logger
-end
+require 'plaid'
+
+configuration = Plaid::Configuration.new
+configuration.server_index = Plaid::Configuration::Environment["sandbox"]
+configuration.api_key["PLAID-CLIENT-ID"] = Rails.application.credentials.dig(:plaid, :client_id)
+configuration.api_key["PLAID-SECRET"] = Rails.application.credentials.dig(:plaid, :sandbox_secret)
+
+@plaid_client = Plaid::ApiClient.new(
+  configuration
+)
+
+# Make the client accessible throughout the app
+Rails.application.config.plaid_client = @plaid_client
